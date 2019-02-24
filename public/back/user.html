@@ -67,23 +67,44 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>11</td>
-              <td>22</td>
-              <td>33</td>
-              <td>44</td>
-              <td>
-                <button class="btn btn-danger">启用</button>
-              </td>
-            </tr>
+            <!-- 挖个坑 -->
           </tbody>
         </table>
+
+        <!-- 准备分页容器 -->
+        <div class="pull-right">
+          <ul id="paginator"></ul>
+        </div>
+
+
       </div>
     </div>
   </div>
 
 
-  <!-- 模态框 --> 
+  <!-- user模态框 -->
+  <div class="modal fade" tabindex="-1" id="userModal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+          <h4 class="modal-title">温馨提示</h4>
+        </div>
+        <div class="modal-body">
+          <p class="red"><i class="glyphicon glyphicon-info-sign"></i>你确定要执行此操作吗？</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" id="confirmBtn">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- 退出模态框 -->
   <!-- 调整模态框大小  默认中等
        1. modal-lg  大模态框
        2. modal-sm  小模态框
@@ -93,7 +114,7 @@
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span >&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
           <h4 class="modal-title">温馨提示</h4>
         </div>
         <div class="modal-body">
@@ -106,12 +127,36 @@
       </div>
     </div>
   </div>
+  <script type="text/html" id="tpl">
+    {{ each rows v i}}
+    <tr>
+      <td>{{ i + 1 + (page - 1)*size }}</td>
+      <td>{{ v.username }}</td>
+      <td>{{ v.mobile}}</td>
+      <!-- 
+        1一般都是正面的状态,  0负面的状态
+        1表示正常启用, 0表示该用户已禁用
+        isDelete: 1/0
 
+       -->
+      <td>{{ v.isDelete === 1 ? '正常' : '已禁用'}}</td>
+      <td data-id='{{ v.id }}'>
+        {{ if v.isDelete === 1 }}
+            <button class="btn btn-danger">禁用</button>
+          {{ else }}
+            <button class="btn btn-success">启用</button>
+          {{ /if }}
+        </td>
+      </tr>
+    {{ /each }}
+  </script>
 
   <script src="./lib/jquery/jquery.js"></script>
   <script src="./lib/bootstrap/js/bootstrap.js"></script>
   <script src="./lib/bootstrap-validator/js/bootstrapValidator.min.js"></script>
   <script src="./lib/nprogress/nprogress.js"></script>
+  <script src="./lib/artTemplate/template-web.js"></script>
+  <script src="./lib/bootstrap-paginator/bootstrap-paginator.js"></script>
   <script src="./js/common.js"></script>
   <script src="./js/user.js"></script>
   <script src="./js/isLogin.js"></script>
