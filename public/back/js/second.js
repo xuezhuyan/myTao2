@@ -1,3 +1,15 @@
+/*
+1. 发送ajax请求, 把从后天请求回来的数据动态的渲染到页面上
+2. 在ajax成功回调函数中插入分页插件
+3. 给按钮添加点击事件, 显示模态框
+4. 显示模态框的同时, 发送ajax请求, 获取所有馆的数据, 动态渲染到下拉菜单中
+5. 把下拉菜单的内容, 添加给button按钮
+
+
+*/
+
+
+
 $(function () {
     // 一进入页面就发送ajax请求
     var currentPage = 1; //当前页面
@@ -14,7 +26,7 @@ $(function () {
             dataType: 'json',
             success: function (info) {
                 console.log(info);
-                var htmlStr = template('secon4dTpl', info);
+                var htmlStr = template('secondTpl', info);
                 $('tbody').html(htmlStr);
 
                 // 实现分页插件的初始化
