@@ -1,3 +1,15 @@
+/*
+    1. 发送ajax请求数据, 动态的渲染在页面上(template('模板id', info数据))
+    2. 在ajax成功回调函数中 添加页面组件(ul容器)
+    3. 点击按钮 显示模态框  
+    4. 模态框中有input表单  需要验证(bootstrapValidator)
+    5. 点击添加按钮, 把数据发送给后台 重新渲染页面  重置表单
+
+
+*/
+
+
+
 $(function () {
     // 发送ajax请求, 获取数据, 完成渲染
     var currentPage = 1; //当前页
