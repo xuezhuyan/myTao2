@@ -88,7 +88,6 @@ ul {
   padding-left: 40px;
   border-left: 3px solid transparent;
 }
-
 .lt_aside .nav a.current {
   background-color: #1D1F21;
   border-left: 3px solid #069;
@@ -146,3 +145,10 @@ ul {
   width: 48%;
   height: 400px;
 } 
+
+.table.table-bordered th,
+.table.table-bordered td {
+  text-align: center;
+  /* 表格内容垂直居中 */
+  vertical-align: middle;
+}

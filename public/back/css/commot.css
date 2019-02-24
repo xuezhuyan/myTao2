@@ -4,6 +4,12 @@ a:hover,
 a:active {
     text-decoration: none;
 }
+.mg_l {
+    margin-left: 15px;
+}
+.red {
+    color: #A94442;
+}
 .lt_bgc {
     background-color: #222D32;
 }
@@ -125,3 +131,13 @@ a:active {
   width: 48%;
   height: 400px;
 } 
+
+
+
+
+/*    user    */
+.table.table-bordered th,
+.table.table-bordered td {
+    text-align: center;
+    vertical-align: middle;
+}
