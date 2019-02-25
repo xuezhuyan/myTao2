@@ -63,6 +63,8 @@ $(function () {
             },
             dataType: 'json',
             success: function (info) {
+                console.log(info);
+                
                 var htmlStr = template('dropdownTpl', info);
                 $('.dropdown-menu').html(htmlStr);
             }
@@ -74,5 +76,118 @@ $(function () {
         var txt = $(this).text();
         // 设置给  button 按钮
         $('#dropdownText').text(txt);
+
+        // 点击下拉菜单框 选中的类id， 设置给隐藏域
+        var id = $(this).data('id');
+        console.log(id);
+        
+        // 设置给隐藏域  
+        // 1. 在下面ajax中 $("#form").serialize(); 把隐藏域中input的 id值传给后台
+        // 2. 后台接收到id值,查找对应的categoryName类名, 页面刷新后渲染到表单页面中
+        $('[name="categoryId"]').val( id );
+        // 只要给隐藏域赋值了, 此时校验状态应该更新程成功
+        $('#form').data('bootstrapValidator').updateStatus('categoryId', 'VALID');
+
     })
+
+
+    // 4. 完成文件上传初始化
+    $("#fileupload").fileupload({
+        dataType:"json",
+        //e：事件对象
+        //data：图片上传后的对象，通过data.result.picAddr可以获取上传后的图片地址
+        done:function (e, data) {
+          console.log(data);
+          // 后台返回的结果  result
+          var result = data.result;
+          // 获取返回的图片路径
+          var picUrl = result.picAddr;
+          // 将拿到后台的路径 设置给 img 的 src
+          $('#imgBox img').attr('src', picUrl);
+          // 把路径赋值给隐藏域 
+          $('[name="brandLogo"]').val(picUrl);
+          // 只要隐藏域有值了, 就是更新成成功的状态
+          $('#form').data('bootstrapValidator').updateStatus('brandLogo', 'VALID');
+        }
+  });
+
+
+  // 5. 直接进行校验
+  $('#form').bootstrapValidator({
+    //1. 指定不校验的类型，默认为[':disabled', ':hidden', ':not(:visible)'],可以不设置
+    excluded: [],
+  
+    //2. 指定校验时的图标显示，默认是bootstrap风格
+    feedbackIcons: {
+      valid: 'glyphicon glyphicon-ok',
+      invalid: 'glyphicon glyphicon-remove',
+      validating: 'glyphicon glyphicon-refresh'
+    },
+  
+    //3. 指定校验字段
+    fields: {
+      //校验用户名，对应name表单的name属性
+      categoryId: {
+        validators: {
+          //不能为空
+          notEmpty: {
+            message: '请选择一级分类'
+          },
+        }
+      },
+      brandName: {
+        validators: {
+          //不能为空
+          notEmpty: {
+            message: '请输入二级分类名称'
+          },
+        }
+      },
+      brandLogo: {
+        validators: {
+          //不能为空
+          notEmpty: {
+            message: '请选择图片'
+          },
+        }
+      }
+    }
+  });
+
+
+  // 6. 注册表单校验成功事件, 阻止默认的提交, 通过ajax提交
+  $('#form').on('success.form.bv', function (e) {
+      e.preventDefault();
+      $.ajax({
+          type: 'post',
+          url: '/category/addSecondCategory',
+          data: $("#form").serialize(),
+          dataType: 'json',
+          success: function ( info ) {
+              console.log(info);
+              console.log(1);
+              if (info.success) {
+                  // 添加成功  关闭模态框
+                  $("#addModal").modal('hide');
+                  // 页面重新渲染到第一页
+                  currentPage = 1;
+                  render();
+                  console.log('你好');
+                  
+                  // 将表单元素重置
+                  $("#form").data('bootstrapValidator').resetForm(true);
+                  // button 和 img 不是表单元素, 需手动重置
+                  $('#dropdownText').text('请选择一级分类');
+                  $("#imgBox img").attr('src', '');
+              }
+          }
+      })
+  })
+
+  $('#noAdd').on('click', function () {
+    $("#form").data('bootstrapValidator').resetForm(true);
+    // button 和 img 不是表单元素, 需手动重置
+    $('#dropdownText').text('请选择一级分类');
+    $("#imgBox img").attr('src', '');
+  })
 })

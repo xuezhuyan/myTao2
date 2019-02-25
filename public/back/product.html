@@ -53,13 +53,103 @@
       <!-- 路径导航 -->
       <ol class="breadcrumb mt_20">
         <li><a href="index.html">管理系统</a></li>
-        <li class="active">首页</li>
+        <li class="active">商品管理</li>
       </ol>
+      <div class="lt_content">
+
+        <button class="btn btn-default mg_l" id="addBtn">添加商品</button>
+
+        <table class="table table-hover table-bordered mt_20">
+          <thead>
+            <tr>
+              <th width="10%">序号</th>
+              <th width="25%">商品名称</th>
+              <th width="25%">商品描述</th>
+              <th width="10%">商品库存</th>
+              <th width="10%">商品尺寸</th>
+              <th width="10%">商品状态</th>
+              <th width="10%">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 挖个坑 -->
+          </tbody>
+        </table>
+
+        <div class="pull-right">
+          <ul id="paginator"></ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- 模态框 -->
+  <div class="modal fade" tabindex="-1" id="addModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+          <h4 class="modal-title">添加商品</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                <span id="dropdownText">请选择二级分类</span>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <!-- 挖个坑 -->
+              </ul>
+            </div>
+            <input type="hidden" name="brandId">
+          </div>
+
+          <div class="form-group">
+            <input type="text" name="proName" class="form-control" placeholder="请输入商品名称">
+          </div>
+
+          <div class="form-group">
+            <textarea class="form-control" name="proDesc" cols="30" rows="4" placeholder="请输入商品描述"></textarea>
+          </div>
+
+          <div class="form-group">
+            <input type="text" name="num" class="form-control" placeholder="">
+          </div>
+
+          <div class="form-group">
+            <input type="text" name="size" class="form-control" placeholder="">
+          </div>
+
+          <div class="form-group">
+            <input type="text" name="oldPrice" class="form-control" placeholder="">
+          </div>
+
+          <div class="form-group">
+            <input type="text" name="price" class="form-control" placeholder="">
+          </div>
+
+          <div class="form-group">
+            <label class="btn btn-default" for="fileupload">选择图片</label>
+            <input multiple type="file" data-url="/product/addProductPic"  name="pic1" class="form-control" style="display: none;">
+          </div>
+
+          <div class="form-group" id="imgBox">
+            <input type="hidden" name="picStatus">
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary">添加</button>
+        </div>
+      </div>
     </div>
   </div>
 
-
-  <!-- 模态框 --> 
+  <!-- 退出模态框 -->
   <!-- 调整模态框大小  默认中等
        1. modal-lg  大模态框
        2. modal-sm  小模态框
@@ -69,7 +159,7 @@
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span >&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
           <h4 class="modal-title">温馨提示</h4>
         </div>
         <div class="modal-body">
@@ -77,19 +167,48 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary" id="logoutBtn">退出</button>
+          <button type="submit" class="btn btn-primary" id="logoutBtn">退出</button>
         </div>
       </div>
     </div>
   </div>
+  <script type="text/html" id="productTpl">
+    {{ each rows v i}}
+      <tr>
+        <td>{{ i + 1 + (page-1)*size }}</td>
+        <td>{{ v.proName }}</td>
+        <td>{{ v.proDesc }}</td>
+        <td>{{ v.num }}</td>
+        <td>{{ v.size }}</td>
+        <td>{{ v.statu === 1 ? '已上架' : '已下架'}}</td>
+        <td>
+          {{if v.statu === 1}}
+          <button class="btn btn-danger">下架</button>
+          {{ else }}
+          <button class='btn btn-success'>上架</button>
+          {{ /if}}
+        </td>
+      </tr>
+    {{ /each}}
+  </script>
 
-
+  <script type="text/html" id="dropdownTpl">
+    {{ each rows v i}}
+    <li><a data-id="{{ v.id }}" href="#">{{ v.brandName}}</a></li>
+    {{ /each}}
+  </script>
   <script src="./lib/jquery/jquery.js"></script>
+  <script src="./lib/jquery-fileupload/jquery.ui.widget.js"></script>
+  <script src="./lib/jquery-fileupload/jquery.fileupload.js"></script>
+
   <script src="./lib/bootstrap/js/bootstrap.js"></script>
   <script src="./lib/bootstrap-validator/js/bootstrapValidator.min.js"></script>
+  <script src="./lib/bootstrap-paginator/bootstrap-paginator.js"></script>
+  <script src="./lib/artTemplate/template-web.js"></script>
   <script src="./lib/nprogress/nprogress.js"></script>
   <script src="./js/common.js"></script>
   <script src="./js/isLogin.js"></script>
+  <script src="./js/product.js"></script>
 
 </body>
 

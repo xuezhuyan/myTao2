@@ -49,7 +49,7 @@ $(function () {
        (1) 校验成功, 此时会默认提交, 发生页面跳转,  注册表单校验成功事件, 在事件中阻止默认的跳转提交, 通过ajax提交
        (2) 校验失败, 自动拦截提交
 
-      注册表单校验成功事件, 在事件中阻止默认的提交, 通过ajax提交
+      注册表单校验成功事件, 在事件委托中阻止默认的提交, 通过ajax提交
   */
  $("#form").on('success.form.bv', function (e) {
     e.preventDefault();
@@ -57,7 +57,7 @@ $(function () {
     $.ajax({
         type: "post",
         url: "/employee/employeeLogin",
-        data: $('#form').serialize(),
+        data: $('#form').serialize(),  // $('#form').serialize(),  获取表单里所有的内容
         dataType: 'json',
         success: function (info) {
             if (info.error === 1000) {
